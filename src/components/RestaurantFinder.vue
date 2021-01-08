@@ -27,6 +27,15 @@ export default {
     RestaurantFinderFilters,
     RestaurantFinderResults,
     RestaurantFinderCard
+  },
+  computed: {
+    posts() {
+      console.log(this.$store.state.restaurants);
+      return this.$store.state.restaurants
+    }
+  },
+  mounted() {
+    this.$store.dispatch("getRestaurants");
   }
 }
 </script>

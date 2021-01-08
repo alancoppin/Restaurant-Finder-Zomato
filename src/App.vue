@@ -16,11 +16,14 @@ export default {
 </script>
 
 <style lang="scss">
+
 @import "assets/scss/base";
+
 #app{
   height: 100vh;
   width: 100%;
   overflow: hidden;
   position: relative;
 }
+
 </style>
