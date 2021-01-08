@@ -1,9 +1,12 @@
 <template>
+  <!-- Card -->
   <div class="RestaurantFinderCard">
+    <!-- Card Image -->
     <div class="RestaurantFinderCard__image">
       <img v-if="singleRestaurant.featured_image" :src="singleRestaurant.featured_image" :alt="singleRestaurant.name">
-      <img v-else :src="require('src/assets/images/image-polaroid-regular.svg')" alt="No image available" height="40" width="40">
+      <img class="small" v-else :src="require('@/assets/images/image-polaroid-regular.svg')" alt="No image available">
     </div>
+    <!-- Card Details -->
     <div class="RestaurantFinderCard__details">
       <h2 class="RestaurantFinderCard__title">{{singleRestaurant.name}}</h2>
       <p class="RestaurantFinderCard__address">
@@ -14,7 +17,7 @@
           <span v-if="singleRestaurant.has_table_booking">Booking available</span>
           <span v-else>No bookings</span>
         </div>
-        <div class="RestaurantFinderCard__icon RestaurantFinderCard__icon--check">
+        <div :class="singleRestaurant.has_table_booking ? 'RestaurantFinderCard__icon RestaurantFinderCard__icon--check' : 'RestaurantFinderCard__icon RestaurantFinderCard__icon--cross'">
           <span v-if="singleRestaurant.has_online_delivery">Delivery available</span>
           <span v-else>No delivery</span>
         </div>
@@ -30,7 +33,7 @@
       <div class="RestaurantFinderCard__elem" v-if="singleRestaurant.timings">
         <h4 class="RestaurantFinderCard__info-title">OPENING HOURS</h4>
         <p class="RestaurantFinderCard__info">
-          <span>{{ singleRestaurant.timings }}</span>
+          <span :class="longText(singleRestaurant.timings) ? 'RestaurantFinderCard__info--small-text' : ''">{{ singleRestaurant.timings }}</span>
           <span class="btn-primary RestaurantFinderCard__btn RestaurantFinderCard__btn--success" v-if="singleRestaurant.is_delivering_now">open now</span>
           <span class="btn-primary RestaurantFinderCard__btn RestaurantFinderCard__btn--error" v-else>close now</span>
         </p>
@@ -52,11 +55,24 @@ export default {
     }
   },
   methods : {
+    /*
+    ** Check the size of the text
+    ** Return true if more than 100 character
+     */
+    longText(text){
+      if(text.length>100){
+        return true
+      }else{
+        return false
+      }
+    }
   },
   created() {
+    // Assign the value received from the parent to singleRestaurant to display the data
     this.singleRestaurant = this.restaurant[0].restaurant;
   },
   watch : {
+    // Watch for any changes on restaurant prop, assign it to singleRestaurant to display the data
     restaurant(){
       this.singleRestaurant = this.restaurant[0].restaurant;
     }
@@ -97,6 +113,10 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
+    &.small{
+      height: 40px;
+      width: auto;
+    }
   }
 }
 
@@ -131,16 +151,17 @@ export default {
     width: 1.3rem;
     margin-right: .5rem;
     display: inline-block;
-    background-color: red;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   &--check{
     &:before{
-      //background-image: url('./src/assets/images/check-regular.svg');
+      background-image: url('~@/assets/images/check-regular.svg');
     }
   }
   &--cross{
     &:before{
-      //background-image: url('src/assets/images/times-regular.svg');
+      background-image: url('~@/assets/images/times-regular.svg');
     }
   }
 }
@@ -158,6 +179,9 @@ export default {
     align-items: flex-start;
     span:not(.RestaurantFinderCard__btn){
       font-size: 1.8rem;
+      &.RestaurantFinderCard__info--small-text{
+        font-size: 1.4em;
+      }
     }
   }
   .RestaurantFinderCard__btn{
