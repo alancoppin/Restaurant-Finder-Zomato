@@ -3,11 +3,11 @@
     <div v-if="pending">Loading...</div>
     <div class="RestaurantFinder" v-else>
       <div class="RestaurantFinder__filters">
-        <RestaurantFinderFilters :categories="categories"></RestaurantFinderFilters>
+        <RestaurantFinderFilters :categories="categories" :cuisines="cuisines"></RestaurantFinderFilters>
       </div>
       <div class="RestaurantFinder__grip">
         <div class="RestaurantFinder__results">
-          <RestaurantFinderResults></RestaurantFinderResults>
+          <RestaurantFinderResults :restaurants="restaurants"></RestaurantFinderResults>
         </div>
         <div class="RestaurantFinder__card">
           <RestaurantFinderCard></RestaurantFinderCard>
@@ -34,23 +34,72 @@ export default {
   data () {
     return {
       pending : true,
-      categories : null
+      categories : [],
+      cuisines : [],
+      restaurants : []
     }
   },
   methods : {
     getCategories(){
-      axios.get('/categories')
-      .then(response => {
-        this.categories = response.data.categories;
+      return axios.get('/categories')
+          .then(response => {
+            console.log('done');
+            return response.data.categories
+          })
+          .catch(e => {
+            console.error(e);
+          })
+
+    },
+    getCuisine(){
+      return axios.get('/cuisines',{
+        params : {
+          city_id : process.env.VUE_APP_CITY_ID
+        }
       })
-      .catch(e => {
-        console.error(e);
-      })
+          .then(response => {
+            console.log('done cuisines');
+            return response.data.cuisines
+          })
+          .catch(e => {
+            console.error(e);
+          })
+
+    },
+    getRestaurants(){
+      this.$store.dispatch('getRestaurants')
+          .then(()=> {
+            this.restaurants = this.$store.getters.allRestaurants;
+            console.log('done restaurants');
+          })
+          .catch((e)=>{
+            console.error(e)
+          })
+    },
+    async fetchData(){
+      this.categories = await this.getCategories();
+      this.cuisines = await this.getCuisine();
+      await this.getRestaurants();
+      console.log('display')
+      this.pending = false;
     }
   },
-  async mounted(){
-    await this.getCategories();
-    this.pending = false
+  mounted(){
+    this.fetchData();
+    // Alternatively we could also do that
+    // and drop the fetchData function
+    // Promise.all([
+    //     this.getCategories(),
+    //     this.getCuisine()
+    // ])
+    // .then((values)=>{
+    //   this.categories = values[0];
+    //   this.cuisines = values[1];
+    //   this.pending = false;
+    // })
+    // .catch((error)=>{
+    //   console.error(error)
+    // })
   }
 }
 </script>

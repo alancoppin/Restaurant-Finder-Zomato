@@ -2,30 +2,21 @@
   <div class="RestaurantFinderResults">
       <h3 class="RestaurantFinderResults__title">Results</h3>
       <ul class="RestaurantFinderResults__list">
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item RestaurantFinderResults__item--active">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
-        <li class="RestaurantFinderResults__item">Bread & Bone Wood Grill</li>
+        <li class="RestaurantFinderResults__item" v-for="restaurant in restaurants" :key="restaurant.restaurant.id">
+          {{restaurant.restaurant.name}}
+        </li>
       </ul>
   </div>
 </template>
 
 <script>
 export default {
-  name: "RestaurantFinderResults"
+  name: "RestaurantFinderResults",
+  props : {
+    restaurants : {
+      type : Array
+    }
+  },
 }
 </script>
 

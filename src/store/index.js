@@ -11,21 +11,31 @@ axios.defaults.headers.common['user-key'] = process.env.VUE_APP_ZOMATO_API_KEY
 
 export default new Vuex.Store({
   state: {
-    categories : {}
+    restaurants : {}
+  },
+  getters :  {
+    allRestaurants : (state) => state.restaurants.restaurants
   },
   mutations: {
-    setCategories (state, categories) {
-      state.categories = categories
+    setRestaurants (state, restaurant) {
+      state.restaurants = restaurant
     }
   },
   actions: {
-    getCategories({ commit }) {
-      axios.get('/categories')
+    getRestaurants({ commit }) {
+      return axios.get('/search',{
+            params : {
+              entity_id : process.env.VUE_APP_CITY_ID,
+              entity_type : 'city',
+              count : 100
+            }
+          })
           .then(response => {
-            commit('setCategories', response.data)
+            commit('setRestaurants', response.data)
+          })
+          .catch((e)=>{
+            console.error(e);
           })
     }
-  },
-  modules: {
   }
 })

@@ -5,9 +5,9 @@
         Category
       </h3>
       <div class="RestaurantFinderFilters__choices">
-        <div class="RestaurantFinderFilters__item">
-          <input type="checkbox" id="test" value="Test">
-          <label for="test">Test</label>
+        <div class="RestaurantFinderFilters__item" v-for="category in categories" :key="category.categories.id">
+          <input type="checkbox" :id="'category-'+category.categories.id" :value="category.categories.id">
+          <label :for="'category-'+category.categories.id">{{category.categories.name}}</label>
         </div>
       </div>
     </div>
@@ -16,9 +16,9 @@
         Cuisine
       </h3>
       <div class="RestaurantFinderFilters__choices">
-        <div class="RestaurantFinderFilters__item">
-          <input type="checkbox" id="test" value="Test">
-          <label for="test">Test</label>
+        <div class="RestaurantFinderFilters__item" v-for="cuisine in cuisines" :key="cuisine.cuisine.cuisine_id">
+          <input type="checkbox" :id="'category-'+cuisine.cuisine.cuisine_id" :value="cuisine.cuisine.cuisine_id">
+          <label :for="'category-'+cuisine.cuisine.cuisine_id">{{cuisine.cuisine.cuisine_name}}</label>
         </div>
       </div>
     </div>
@@ -39,7 +39,17 @@
 
 <script>
 export default {
-name: "RestaurantFinderFilters"
+  name: "RestaurantFinderFilters",
+  props : {
+    categories : {
+      type : Array,
+      required : true
+    },
+    cuisines : {
+      type : Array,
+      required : true
+    }
+  }
 }
 </script>
 
