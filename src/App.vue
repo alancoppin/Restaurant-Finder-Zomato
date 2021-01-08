@@ -1,8 +1,9 @@
 <template>
   <div id="app" >
-    <div class="RestaurantFinder">
+    <div v-if="pending">Loading...</div>
+    <div class="RestaurantFinder" v-else>
       <div class="RestaurantFinder__filters">
-        <RestaurantFinderFilters></RestaurantFinderFilters>
+        <RestaurantFinderFilters :categories="categories"></RestaurantFinderFilters>
       </div>
       <div class="RestaurantFinder__grip">
         <div class="RestaurantFinder__results">
@@ -21,12 +22,35 @@ import RestaurantFinderFilters from "@/components/RestaurantFinderFilters";
 import RestaurantFinderResults from "@/components/RestaurantFinderResults";
 import RestaurantFinderCard from "@/components/RestaurantFinderCard";
 
+import axios from "axios";
+
 export default {
   name: 'App',
   components: {
     RestaurantFinderFilters,
     RestaurantFinderResults,
     RestaurantFinderCard
+  },
+  data () {
+    return {
+      pending : true,
+      categories : null
+    }
+  },
+  methods : {
+    getCategories(){
+      axios.get('/categories')
+      .then(response => {
+        this.categories = response.data.categories;
+      })
+      .catch(e => {
+        console.error(e);
+      })
+    }
+  },
+  async mounted(){
+    await this.getCategories();
+    this.pending = false
   }
 }
 </script>
