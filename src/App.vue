@@ -1,6 +1,9 @@
 <template>
   <div id="app" >
-    <div v-if="pending">Loading...</div>
+    <div class="app__loading" v-if="pending">
+      <img :src="require('@/assets/images/three-dots.svg')" alt="Loading">
+      <span>Getting restaurant...</span>
+    </div>
     <div class="RestaurantFinder" v-else>
       <div class="RestaurantFinder__filters">
         <RestaurantFinderFilters :categories="categories" :cuisines="cuisines"></RestaurantFinderFilters>
@@ -33,6 +36,9 @@ export default {
     }
   },
   methods : {
+    /*
+    ** Get categories data from the API
+     */
     getCategories(){
       return axios.get('/categories')
           .then(response => {
@@ -43,6 +49,9 @@ export default {
           })
 
     },
+    /*
+    ** Get cuisine data from the API
+     */
     getCuisine(){
       return axios.get('/cuisines',{
         params : {
@@ -57,6 +66,9 @@ export default {
           })
 
     },
+    /*
+    ** Get restaurants data through the store
+     */
     getRestaurants(){
       return this.$store.dispatch('getRestaurants')
           .then(()=> {
@@ -66,11 +78,18 @@ export default {
             console.error(e)
           })
     },
+    /*
+    **
+     */
+    hideLoading(){
+      this.pending = false;
+    },
+    // Fetch all the data and hide the loading once the data are fetch
     async fetchData(){
       await this.getCategories();
       await this.getCuisine();
       await this.getRestaurants();
-      this.pending = false;
+      this.hideLoading();
     }
   },
   mounted(){
@@ -96,6 +115,7 @@ export default {
 <style lang="scss">
 
 @import "assets/scss/base";
+@import "src/assets/scss/_variables.scss";
 
 #app{
   height: 100vh;
@@ -104,7 +124,23 @@ export default {
   position: relative;
 }
 
-@import "src/assets/scss/_variables.scss";
+.app__loading{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  img{
+    height: 50px;
+    width: 50px;
+    margin-bottom: 10px;
+  }
+  span{
+    color: $fontColor;
+  }
+}
 
 .RestaurantFinder{
   display: flex;

@@ -1,4 +1,5 @@
 <template>
+  <!-- Results -->
   <div class="RestaurantFinder__results">
     <div class="RestaurantFinderResults">
       <h3 class="RestaurantFinderResults__title">Results</h3>
@@ -9,9 +10,11 @@
       </ul>
       <p v-else>No results, please change your search</p>
     </div>
-    <div class="RestaurantFinder__card">
+    <div class="RestaurantFinder__card" v-if="restaurants">
       <RestaurantFinderCard v-if="restaurant" :restaurant="restaurant"></RestaurantFinderCard>
-      <p v-else>please select a restaurant on the left column</p>
+      <div class="RestaurantFinder__no-card" v-else>
+        <span>Select a restaurant</span>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +40,10 @@ export default {
     }
   },
   methods : {
+    /*
+    ** Get the data of the restaurant with the restaurant ID
+    ** in the store calling a getter
+     */
     getRestaurantCard(restaurantID){
       this.restaurant = this.$store.getters.singleRestaurant(restaurantID);
     }
@@ -68,6 +75,35 @@ export default {
 .RestaurantFinder__card{
   flex-grow: 1;
   background-color: $greyBgCard;
+}
+
+.RestaurantFinder__no-card{
+  height: 100%;
+  width: 100%;
+  padding: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3em;
+  font-weight: bold;
+  text-transform: uppercase;
+  span{
+    opacity: .3;
+    display: inline-flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    &:before{
+      content: '';
+      margin-bottom: 10px;
+      height: 3rem;
+      width: 3rem;
+      display: block;
+      background-image: url('~@/assets/images/arrow-left-regular.svg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+  }
 }
 
 .RestaurantFinderResults__title{
