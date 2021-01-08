@@ -42,32 +42,5 @@ export default {
 
 <style lang="scss" scoped>
 
-@import "src/assets/scss/_variables.scss";
-
-.RestaurantFinder{
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  width: 100%;
-}
-
-.RestaurantFinder__grip{
-  height: calc(100vh - #{$heightFilter});
-  display: flex;
-  position: relative;
-}
-
-.RestaurantFinder__results{
-  width: 28%;
-  min-width:400px;
-  background-color: $greyBgResults;
-  height: 100%;
-  position: relative;
-}
-
-.RestaurantFinder__card{
-  flex-grow: 1;
-  background-color: $greyBgCard;
-}
 
 </style>
