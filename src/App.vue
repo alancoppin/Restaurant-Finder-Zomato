@@ -43,8 +43,7 @@ export default {
     getCategories(){
       return axios.get('/categories')
           .then(response => {
-            console.log('done');
-            return response.data.categories
+            this.categories = response.data.categories
           })
           .catch(e => {
             console.error(e);
@@ -58,8 +57,7 @@ export default {
         }
       })
           .then(response => {
-            console.log('done cuisines');
-            return response.data.cuisines
+            this.cuisines = response.data.cuisines
           })
           .catch(e => {
             console.error(e);
@@ -67,20 +65,18 @@ export default {
 
     },
     getRestaurants(){
-      this.$store.dispatch('getRestaurants')
+      return this.$store.dispatch('getRestaurants')
           .then(()=> {
             this.restaurants = this.$store.getters.allRestaurants;
-            console.log('done restaurants');
           })
           .catch((e)=>{
             console.error(e)
           })
     },
     async fetchData(){
-      this.categories = await this.getCategories();
-      this.cuisines = await this.getCuisine();
+      await this.getCategories();
+      await this.getCuisine();
       await this.getRestaurants();
-      console.log('display')
       this.pending = false;
     }
   },
