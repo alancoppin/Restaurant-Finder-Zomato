@@ -1,22 +1,46 @@
 <template>
-  <div class="RestaurantFinderResults">
+  <div class="RestaurantFinder__results">
+    <div class="RestaurantFinderResults">
       <h3 class="RestaurantFinderResults__title">Results</h3>
-      <ul class="RestaurantFinderResults__list">
-        <li class="RestaurantFinderResults__item" v-for="restaurant in restaurants" :key="restaurant.restaurant.id">
+      <ul class="RestaurantFinderResults__list" v-if="restaurants">
+        <li class="RestaurantFinderResults__item" role="button" v-for="restaurant in restaurants" :key="restaurant.restaurant.id" v-on:click="getRestaurantCard(restaurant.restaurant.id)">
           {{restaurant.restaurant.name}}
         </li>
       </ul>
+      <p v-else>No results, please change your search</p>
+    </div>
+    <div class="RestaurantFinder__card">
+      <RestaurantFinderCard v-if="restaurant" :restaurant="restaurant"></RestaurantFinderCard>
+      <p v-else>please select a restaurant on the left column</p>
+    </div>
   </div>
 </template>
 
 <script>
+
+import RestaurantFinderCard from "@/components/RestaurantFinderCard";
+
 export default {
   name: "RestaurantFinderResults",
+  components : {
+    RestaurantFinderCard
+  },
   props : {
     restaurants : {
       type : Array
     }
   },
+  data () {
+    return {
+      pending : true,
+      restaurant : null
+    }
+  },
+  methods : {
+    getRestaurantCard(restaurantID){
+      this.restaurant = this.$store.getters.singleRestaurant(restaurantID);
+    }
+  }
 }
 </script>
 
@@ -24,12 +48,26 @@ export default {
 
 @import "src/assets/scss/variables";
 
+.RestaurantFinder__results{
+  height: calc(100vh - #{$heightFilter});
+  display: flex;
+  position: relative;
+}
+
 .RestaurantFinderResults{
-  max-height: 100%;
-  width: 100%;
+  width: 28%;
+  min-width:400px;
+  background-color: $greyBgResults;
+  height: 100%;
+  position: relative;
   overflow:scroll;
   padding-top: 68px;
   margin-bottom: 40px;
+}
+
+.RestaurantFinder__card{
+  flex-grow: 1;
+  background-color: $greyBgCard;
 }
 
 .RestaurantFinderResults__title{
@@ -53,6 +91,7 @@ export default {
   color: $blueGrey;
   font-size: 1.3rem;
   transition : background-color .3s ease, color .3s ease;
+  cursor: pointer;
   &:first-child{
     border-top:1px solid #b2b6b7;
   }

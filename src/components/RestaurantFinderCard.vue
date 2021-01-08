@@ -1,38 +1,66 @@
 <template>
   <div class="RestaurantFinderCard">
     <div class="RestaurantFinderCard__image">
-      <img src="" alt="">
+      <img v-if="singleRestaurant.featured_image" :src="singleRestaurant.featured_image" :alt="singleRestaurant.name">
+      <img v-else :src="require('src/assets/images/image-polaroid-regular.svg')" alt="No image available" height="40" width="40">
     </div>
     <div class="RestaurantFinderCard__details">
-      <h2 class="RestaurantFinderCard__title">Handsome and the Duchess</h2>
-      <p class="RestaurantFinderCard__address">16 McHenry Street, Adelaide, City Centre, Adelaide, SA</p>
+      <h2 class="RestaurantFinderCard__title">{{singleRestaurant.name}}</h2>
+      <p class="RestaurantFinderCard__address">
+        <span v-if="singleRestaurant.location.address">{{ singleRestaurant.location.address }}</span>
+      </p>
       <div class="RestaurantFinderCard__icons">
-        <div class="RestaurantFinderCard__icon RestaurantFinderCard__icon--cross">
-          No bookings
+        <div :class="singleRestaurant.has_table_booking ? 'RestaurantFinderCard__icon RestaurantFinderCard__icon--check' : 'RestaurantFinderCard__icon RestaurantFinderCard__icon--cross'">
+          <span v-if="singleRestaurant.has_table_booking">Booking available</span>
+          <span v-else>No bookings</span>
         </div>
         <div class="RestaurantFinderCard__icon RestaurantFinderCard__icon--check">
-          Delivery available
+          <span v-if="singleRestaurant.has_online_delivery">Delivery available</span>
+          <span v-else>No delivery</span>
         </div>
       </div>
-      <div class="RestaurantFinderCard__elem">
+      <div class="RestaurantFinderCard__elem" v-if="singleRestaurant.cuisines">
         <h4 class="RestaurantFinderCard__info-title">Cuisines</h4>
-        <p class="RestaurantFinderCard__info"><span>Coffee and Tea, Cafe Food</span></p>
+        <p class="RestaurantFinderCard__info"><span>{{ singleRestaurant.cuisines }}</span></p>
       </div>
-      <div class="RestaurantFinderCard__elem">
+      <div class="RestaurantFinderCard__elem" v-if="singleRestaurant.phone_numbers">
         <h4 class="RestaurantFinderCard__info-title">Phone Number</h4>
-        <p class="RestaurantFinderCard__info"><span>0425 729 534</span></p>
+        <p class="RestaurantFinderCard__info"><span>{{ singleRestaurant.phone_numbers }}</span></p>
       </div>
-      <div class="RestaurantFinderCard__elem">
+      <div class="RestaurantFinderCard__elem" v-if="singleRestaurant.timings">
         <h4 class="RestaurantFinderCard__info-title">OPENING HOURS</h4>
-        <p class="RestaurantFinderCard__info"><span>Today 6:30AM to 4PM</span> <span class="btn-primary RestaurantFinderCard__btn RestaurantFinderCard__btn--success">open now</span></p>
+        <p class="RestaurantFinderCard__info">
+          <span>{{ singleRestaurant.timings }}</span>
+          <span class="btn-primary RestaurantFinderCard__btn RestaurantFinderCard__btn--success" v-if="singleRestaurant.is_delivering_now">open now</span>
+          <span class="btn-primary RestaurantFinderCard__btn RestaurantFinderCard__btn--error" v-else>close now</span>
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
-  name: "RestaurantFinderCard"
+  name: "RestaurantFinderCard",
+  props : {
+    restaurant : Array
+  },
+  data(){
+    return {
+      singleRestaurant : {},
+    }
+  },
+  methods : {
+  },
+  created() {
+    this.singleRestaurant = this.restaurant[0].restaurant;
+  },
+  watch : {
+    restaurant(){
+      this.singleRestaurant = this.restaurant[0].restaurant;
+    }
+  }
 }
 </script>
 
@@ -43,21 +71,32 @@ export default {
 .RestaurantFinderCard{
   padding:5rem;
   display: flex;
+  align-items: flex-start;
 }
 
 .RestaurantFinderCard__image{
   width: 38%;
   position: relative;
   overflow: hidden;
-  background-color: red;
+  background-color: $greyBgResults;
   margin-right: 4rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &:before{
     content: '';
     display: block;
     padding-bottom: 100%;
   }
   img{
-    width: 100%;
+    height: 100%;
+    width: auto;
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
   }
 }
 
@@ -94,6 +133,16 @@ export default {
     display: inline-block;
     background-color: red;
   }
+  &--check{
+    &:before{
+      //background-image: url('./src/assets/images/check-regular.svg');
+    }
+  }
+  &--cross{
+    &:before{
+      //background-image: url('src/assets/images/times-regular.svg');
+    }
+  }
 }
 
 .RestaurantFinderCard__elem{
@@ -106,13 +155,20 @@ export default {
   }
   .RestaurantFinderCard__info{
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     span:not(.RestaurantFinderCard__btn){
       font-size: 1.8rem;
     }
   }
   .RestaurantFinderCard__btn{
     margin-left: 10px;
+    flex-shrink: 0;
+    &--success{
+      background-color:$green;
+    }
+    &--error{
+      background-color:$red;
+    }
   }
 }
 

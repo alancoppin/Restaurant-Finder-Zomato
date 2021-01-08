@@ -4,17 +4,13 @@ import axios from "axios";
 
 Vue.use(Vuex)
 
-// Sets defaults
-axios.defaults.baseURL = 'https://developers.zomato.com/api/v2.1'
-axios.defaults.headers.common['Accept'] = "application/json"
-axios.defaults.headers.common['user-key'] = process.env.VUE_APP_ZOMATO_API_KEY
-
 export default new Vuex.Store({
   state: {
     restaurants : {}
   },
   getters :  {
-    allRestaurants : (state) => state.restaurants.restaurants
+    allRestaurants : (state) => state.restaurants.restaurants,
+    singleRestaurant : (state) => (resutaurantID) => state.restaurants.restaurants.filter(item => item.restaurant.id === resutaurantID)
   },
   mutations: {
     setRestaurants (state, restaurant) {

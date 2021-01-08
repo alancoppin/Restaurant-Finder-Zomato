@@ -58,7 +58,7 @@ export default {
 @import "src/assets/scss/variables";
 
 .RestaurantFinderFilters{
-  padding: 70px $spacingContainer 0;
+  padding: 70px $spacingContainer 25px;
   background-color: white;
   display: flex;
   height: $heightFilter;
