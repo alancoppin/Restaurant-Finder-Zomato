@@ -83,8 +83,14 @@ export default {
   },
   methods : {
     filterRestaurant(){
+      // Change the status of the store
+      this.$store.dispatch('changeStatus','pending');
+      // Build the parameters object to pass to the dispatch
       let params = this.buildParams();
-      return this.$store.dispatch('getRestaurants',params)
+      this.$store.dispatch('getRestaurants',params)
+          .then(()=>{
+
+          })
           .catch((e)=>{
             console.error(e)
           })

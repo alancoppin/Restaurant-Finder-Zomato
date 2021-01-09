@@ -8,12 +8,13 @@
           {{restaurant.restaurant.name}}
         </li>
       </ul>
-      <p v-else>No results, please change your search</p>
+      <p class="RestaurantFinderResults__empty" v-else>No results, please change your search</p>
+      <Loader v-if="status==='pending'" :class="'RestaurantFinderResults__loader'" :text="'Getting restaurants'"></Loader>
     </div>
     <div class="RestaurantFinder__card">
-      <RestaurantFinderCard v-if="singleRestaurantData" :restaurant="singleRestaurantData"></RestaurantFinderCard>
+      <RestaurantFinderCard v-if="status==='success' && singleRestaurantData" :restaurant="singleRestaurantData"></RestaurantFinderCard>
       <div class="RestaurantFinder__no-card" v-else>
-        <span v-if="restaurants.length>0">Select a restaurant</span>
+        <span v-if="status==='success'">Select a restaurant to see more</span>
       </div>
     </div>
   </div>
@@ -39,7 +40,7 @@ export default {
       resultsRestaurant : null
     }
   },
-  computed : mapState(['restaurants']),
+  computed : mapState(['restaurants','status']),
   methods : {
     /*
     ** Get the data of the restaurant with the restaurant ID
@@ -51,6 +52,7 @@ export default {
   },
   watch : {
     restaurants(){
+      console.log('data here');
       this.singleRestaurantData = null;
     }
   }
@@ -77,6 +79,18 @@ export default {
   padding-top: 68px;
   margin-bottom: 40px;
   flex-shrink: 0;
+}
+
+.app__loading.RestaurantFinderResults__loader{
+  position: absolute;
+  background-color: $greyBgResults;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.RestaurantFinderResults__empty{
+  padding: 20px $spacingContainer;
 }
 
 .RestaurantFinder__card{

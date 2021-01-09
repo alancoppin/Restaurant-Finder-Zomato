@@ -11,6 +11,9 @@ axios.defaults.headers.common['Accept'] = "application/json"
 axios.defaults.headers.common['user-key'] = process.env.VUE_APP_ZOMATO_API_KEY
 
 
+Vue.component('Loader', require('./components/RestaurantFinderLoader').default);
+
+
 new Vue({
   store,
   render: h => h(App)

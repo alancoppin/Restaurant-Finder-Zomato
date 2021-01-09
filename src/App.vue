@@ -1,9 +1,6 @@
 <template>
   <div id="app" >
-    <div class="app__loading" v-if="pending">
-      <img :src="require('@/assets/images/three-dots.svg')" alt="Loading">
-      <span>Getting restaurant...</span>
-    </div>
+    <Loader v-if="pending" :text="'Getting restaurants'"></Loader>
     <div class="RestaurantFinder" v-else>
       <div class="RestaurantFinder__filters">
         <RestaurantFinderFilters :categories="categories" :cuisines="cuisines"></RestaurantFinderFilters>
@@ -72,7 +69,14 @@ export default {
     /*
     ** Get restaurants data through the store
      */
-    getRestaurants(){
+    async getRestaurants(){
+      // try{
+      //   await this.$store.dispatch('getRestaurants')
+      //   console.log('await done');
+      // }
+      // catch(e){
+      //   console.error(e)
+      // }
       return this.$store.dispatch('getRestaurants')
           .catch((e)=>{
             console.error(e)
@@ -81,15 +85,12 @@ export default {
     /*
     **
      */
-    hideLoading(){
-      this.pending = false;
-    },
     // Fetch all the data and hide the loading once the data are fetch
     async fetchData(){
       await this.getCategories();
       await this.getCuisine();
       await this.getRestaurants();
-      this.hideLoading();
+      this.pending = false;
     }
   },
   mounted(){
@@ -122,24 +123,6 @@ export default {
   width: 100%;
   overflow: hidden;
   position: relative;
-}
-
-.app__loading{
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  img{
-    height: 50px;
-    width: 50px;
-    margin-bottom: 10px;
-  }
-  span{
-    color: $fontColor;
-  }
 }
 
 .RestaurantFinder{

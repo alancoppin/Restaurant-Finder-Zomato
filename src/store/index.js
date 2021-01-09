@@ -6,18 +6,26 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    restaurants : {}
+    restaurants : {},
+    // Status of the process
+    status : 'pending',
   },
   getters :  {
     // Get all restaurant form state.restaurants
     allRestaurants : (state) => state.restaurants,
     // Get single restaurant with an ID
     singleRestaurant : (state) => (resutaurantID) => state.restaurants.filter(item => item.restaurant.id === resutaurantID),
+    // Get the status from the store
+    getStatus : (state) => state.status
   },
   mutations: {
     // Set Data to state.restaurants
-    setRestaurants (state, data) {
-      state.restaurants = data
+    setRestaurants (state, dataRestaurant) {
+      state.restaurants = dataRestaurant
+    },
+    // Set the status
+    setStatus (state,status) {
+      state.status = status;
     }
   },
   actions: {
@@ -33,11 +41,15 @@ export default new Vuex.Store({
           })
           .then(response => {
             let data = response.data.restaurants;
-            commit('setRestaurants', data)
+            commit('setRestaurants', data);
+            commit('setStatus','success');
           })
           .catch((e)=>{
             console.error(e);
           })
+    },
+    changeStatus({commit},status){
+      commit('setStatus',status);
     }
   }
 })
