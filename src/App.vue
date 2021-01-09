@@ -9,7 +9,7 @@
         <RestaurantFinderFilters :categories="categories" :cuisines="cuisines"></RestaurantFinderFilters>
       </div>
       <div class="RestaurantFinder__grip">
-        <RestaurantFinderResults :restaurants="restaurants"></RestaurantFinderResults>
+        <RestaurantFinderResults></RestaurantFinderResults>
       </div>
     </div>
   </div>
@@ -30,6 +30,9 @@ export default {
   data () {
     return {
       pending : true,
+      // Use to display the categories by ID
+      targetedCategories : [1,2,5,11],
+      targetedCuisines : [30,161,82,40,3,5,55,304,25,983,110],
       categories : [],
       cuisines : [],
       restaurants : []
@@ -42,7 +45,7 @@ export default {
     getCategories(){
       return axios.get('/categories')
           .then(response => {
-            this.categories = response.data.categories
+            this.categories = response.data.categories.filter(item=>this.targetedCategories.includes(item.categories.id))
           })
           .catch(e => {
             console.error(e);
@@ -59,7 +62,7 @@ export default {
         }
       })
           .then(response => {
-            this.cuisines = response.data.cuisines
+            this.cuisines = response.data.cuisines.filter(item=>this.targetedCuisines.includes(item.cuisine.cuisine_id));
           })
           .catch(e => {
             console.error(e);
@@ -71,9 +74,6 @@ export default {
      */
     getRestaurants(){
       return this.$store.dispatch('getRestaurants')
-          .then(()=> {
-            this.restaurants = this.$store.getters.allRestaurants;
-          })
           .catch((e)=>{
             console.error(e)
           })

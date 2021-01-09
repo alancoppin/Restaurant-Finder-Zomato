@@ -3,17 +3,17 @@
   <div class="RestaurantFinder__results">
     <div class="RestaurantFinderResults">
       <h3 class="RestaurantFinderResults__title">Results</h3>
-      <ul class="RestaurantFinderResults__list" v-if="restaurants">
+      <ul class="RestaurantFinderResults__list" v-if="restaurants.length>0">
         <li class="RestaurantFinderResults__item" role="button" v-for="restaurant in restaurants" :key="restaurant.restaurant.id" v-on:click="getRestaurantCard(restaurant.restaurant.id)">
           {{restaurant.restaurant.name}}
         </li>
       </ul>
       <p v-else>No results, please change your search</p>
     </div>
-    <div class="RestaurantFinder__card" v-if="restaurants">
-      <RestaurantFinderCard v-if="restaurant" :restaurant="restaurant"></RestaurantFinderCard>
+    <div class="RestaurantFinder__card">
+      <RestaurantFinderCard v-if="singleRestaurantData" :restaurant="singleRestaurantData"></RestaurantFinderCard>
       <div class="RestaurantFinder__no-card" v-else>
-        <span>Select a restaurant</span>
+        <span v-if="restaurants.length>0">Select a restaurant</span>
       </div>
     </div>
   </div>
@@ -22,6 +22,7 @@
 <script>
 
 import RestaurantFinderCard from "@/components/RestaurantFinderCard";
+import {mapState} from 'vuex';
 
 export default {
   name: "RestaurantFinderResults",
@@ -29,23 +30,28 @@ export default {
     RestaurantFinderCard
   },
   props : {
-    restaurants : {
-      type : Array
-    }
+
   },
   data () {
     return {
       pending : true,
-      restaurant : null
+      singleRestaurantData : null,
+      resultsRestaurant : null
     }
   },
+  computed : mapState(['restaurants']),
   methods : {
     /*
     ** Get the data of the restaurant with the restaurant ID
     ** in the store calling a getter
      */
     getRestaurantCard(restaurantID){
-      this.restaurant = this.$store.getters.singleRestaurant(restaurantID);
+      this.singleRestaurantData = this.$store.getters.singleRestaurant(restaurantID);
+    }
+  },
+  watch : {
+    restaurants(){
+      this.singleRestaurantData = null;
     }
   }
 }
@@ -70,6 +76,7 @@ export default {
   overflow:scroll;
   padding-top: 68px;
   margin-bottom: 40px;
+  flex-shrink: 0;
 }
 
 .RestaurantFinder__card{

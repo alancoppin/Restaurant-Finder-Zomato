@@ -40,3 +40,46 @@ h3,h4{
   color: white;
   font-weight: bold;
 }
+
+// Input Checkbox
+.group-checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  input {
+    padding: 0;
+    height: initial;
+    width: initial;
+    margin-bottom: 0;
+    display: none;
+    cursor: pointer;
+    &:checked + label:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: .25rem;
+      left: .4rem;
+      width: .4rem;
+      height: 1rem;
+      border: solid $fontColor;
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+    }
+  }
+  label {
+    position: relative;
+    cursor: pointer;
+    &:before {
+      content:'';
+      -webkit-appearance: none;
+      background: $greyBgResults;
+      height: 1.3rem;
+      width: 1.3rem;
+      display: inline-block;
+      position: relative;
+      vertical-align: middle;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+  }
+}
