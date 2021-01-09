@@ -28,8 +28,6 @@ export default {
     return {
       pending : false,
       // Use to display the categories by ID
-      targetedCategories : [1,2,5,11],
-      targetedCuisines : [30,161,82,40,3,5,55,304,25,983,110],
       categories : [
         {
           "categories": {
