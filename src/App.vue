@@ -30,12 +30,55 @@ export default {
       // Use to display the categories by ID
       targetedCategories : [1,2,5,11],
       targetedCuisines : [30,161,82,40,3,5,55,304,25,983,110],
-      categories : [],
+      categories : [
+        {
+          "categories": {
+            "id": 2,
+            "name": "Dine-out"
+          }
+        },
+        {
+          "categories": {
+            "id": 5,
+            "name": "Takeaway"
+          }
+        },
+        {
+          "categories": {
+            "id": 1,
+            "name": "Delivery"
+          }
+        },
+        {
+          "categories": {
+            "id": 11,
+            "name": "Pubs & Bars"
+          }
+        }
+      ],
       cuisines : [
+        {
+          "cuisine": {
+            "cuisine_id": 1039,
+            "cuisine_name": "Cafe Food"
+          }
+        },
         {
           "cuisine": {
             "cuisine_id": 3,
             "cuisine_name": "Asian"
+          }
+        },
+        {
+          "cuisine": {
+            "cuisine_id": 25,
+            "cuisine_name": "Chinese"
+          }
+        },
+        {
+          "cuisine": {
+            "cuisine_id": 161,
+            "cuisine_name": "Coffee and Tea"
           }
         },
         {
@@ -46,16 +89,40 @@ export default {
         },
         {
           "cuisine": {
-            "cuisine_id": 1039,
-            "cuisine_name": "Cafe Food"
+            "cuisine_id": 983,
+            "cuisine_name": "Pub Food"
           }
         },
         {
           "cuisine": {
-            "cuisine_id": 25,
-            "cuisine_name": "Chinese"
+            "cuisine_id": 82,
+            "cuisine_name": "Pizza"
           }
         },
+        {
+          "cuisine": {
+            "cuisine_id": 55,
+            "cuisine_name": "Italian"
+          }
+        },
+        {
+          "cuisine": {
+            "cuisine_id": 110,
+            "cuisine_name": "Others"
+          }
+        },
+        {
+          "cuisine": {
+            "cuisine_id": 40,
+            "cuisine_name": "Fast Food"
+          }
+        },
+        {
+          "cuisine": {
+            "cuisine_id": 304,
+            "cuisine_name": "Sandwich"
+          }
+        }
       ],
       restaurants : []
     }
@@ -79,10 +146,10 @@ export default {
      */
     getCuisine(){
       return axios.get('/cuisines',{
-        params : {
-          city_id : process.env.VUE_APP_CITY_ID
-        }
-      })
+            params : {
+              city_id : process.env.VUE_APP_CITY_ID
+            }
+          })
           .then(response => {
             this.cuisines = response.data.cuisines.filter(item=>this.targetedCuisines.includes(item.cuisine.cuisine_id));
           })
@@ -95,13 +162,6 @@ export default {
     ** Get restaurants data through the store
      */
     async getRestaurants(){
-      // try{
-      //   await this.$store.dispatch('getRestaurants')
-      //   console.log('await done');
-      // }
-      // catch(e){
-      //   console.error(e)
-      // }
       return this.$store.dispatch('getRestaurants')
           .catch((e)=>{
             console.error(e)
