@@ -30,23 +30,39 @@ export default new Vuex.Store({
   },
   actions: {
     // Get Restaurant from the API
-    getRestaurants({ commit },params) {
+    async getRestaurants({ commit },params) {
+      // let list = [0,20,40,60,80];
       let defaultParams = {
         entity_id : process.env.VUE_APP_CITY_ID,
         entity_type : 'city',
       };
       let allParams = {...defaultParams,...params};
-      return axios.get('/search',{
-            params : allParams
-          })
-          .then(response => {
-            let data = response.data.restaurants;
-            commit('setRestaurants', data);
-            commit('setStatus','success');
-          })
-          .catch((e)=>{
-            console.error(e);
-          })
+      let data = [];
+      try{
+        const response = await axios.get('/search',{params : allParams});
+        response.data.restaurants.map(item => {
+          data.push(item);
+        })
+        commit('setStatus','success');
+        commit('setRestaurants', data);
+        // Load the next page
+        for (let i = 20; i<100;i = i + 20) {
+          try{
+            allParams.start = i;
+            const response = await axios.get('/search',{params : allParams});
+            if(response.data.restaurants){
+              response.data.restaurants.map(item => {
+                data.push(item);
+              })
+              commit('setRestaurants', data);
+            }
+          }catch (e){
+            console.error(e)
+          }
+        }
+      }catch (e){
+        console.error(e)
+      }
     },
     updateStatus({commit},status){
       commit('setStatus',status);

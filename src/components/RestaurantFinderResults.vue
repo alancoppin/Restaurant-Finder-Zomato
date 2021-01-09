@@ -4,7 +4,7 @@
     <div class="RestaurantFinderResults" ref="RestaurantFinderResults">
       <h3 class="RestaurantFinderResults__title">Results</h3>
       <ul class="RestaurantFinderResults__list" v-if="restaurants.length>0">
-        <li class="RestaurantFinderResults__item" role="button" v-for="restaurant in restaurants" :key="restaurant.restaurant.id" v-on:click="getRestaurantCard(restaurant.restaurant.id)">
+        <li class="RestaurantFinderResults__item" :class="isActive===restaurant.restaurant.id ? 'RestaurantFinderResults__item--active' : ''" role="button" v-for="restaurant in restaurants" :key="restaurant.restaurant.id" v-on:click="getRestaurantCard(restaurant.restaurant.id)">
           {{restaurant.restaurant.name}}
         </li>
       </ul>
@@ -37,7 +37,8 @@ export default {
     return {
       pending : true,
       singleRestaurantData : null,
-      resultsRestaurant : null
+      resultsRestaurant : null,
+      isActive : null
     }
   },
   computed : mapState(['restaurants','status']),
@@ -47,6 +48,7 @@ export default {
     ** in the store calling a getter
      */
     getRestaurantCard(restaurantID){
+      this.isActive = restaurantID;
       this.singleRestaurantData = this.$store.getters.singleRestaurant(restaurantID);
     },
   },
@@ -156,7 +158,7 @@ export default {
   &:first-child{
     border-top:1px solid #b2b6b7;
   }
-  &--active{
+  &--active,&:hover{
     background-color: $cyan;
     color: white;
   }

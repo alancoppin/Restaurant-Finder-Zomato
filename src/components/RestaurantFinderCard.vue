@@ -178,12 +178,13 @@ export default {
 }
 
 .RestaurantFinderCard__elem{
-  margin-bottom: 1.3rem;
+  margin-bottom: 1.5rem;
   &:last-child{
     margin-bottom: 0;
   }
   .RestaurantFinderCard__info-title{
     line-height: .9;
+    color: $fontColor;
   }
   .RestaurantFinderCard__info{
     display: flex;

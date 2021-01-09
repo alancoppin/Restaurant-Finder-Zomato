@@ -26,12 +26,37 @@ export default {
   },
   data () {
     return {
-      pending : true,
+      pending : false,
       // Use to display the categories by ID
       targetedCategories : [1,2,5,11],
       targetedCuisines : [30,161,82,40,3,5,55,304,25,983,110],
       categories : [],
-      cuisines : [],
+      cuisines : [
+        {
+          "cuisine": {
+            "cuisine_id": 3,
+            "cuisine_name": "Asian"
+          }
+        },
+        {
+          "cuisine": {
+            "cuisine_id": 5,
+            "cuisine_name": "Bakery"
+          }
+        },
+        {
+          "cuisine": {
+            "cuisine_id": 1039,
+            "cuisine_name": "Cafe Food"
+          }
+        },
+        {
+          "cuisine": {
+            "cuisine_id": 25,
+            "cuisine_name": "Chinese"
+          }
+        },
+      ],
       restaurants : []
     }
   },
@@ -89,26 +114,17 @@ export default {
     async fetchData(){
       await this.getCategories();
       await this.getCuisine();
-      await this.getRestaurants();
+      this.getRestaurants();
       this.pending = false;
     }
   },
   mounted(){
-    this.fetchData();
-    // Alternatively we could also do that
-    // and drop the fetchData function
-    // Promise.all([
-    //     this.getCategories(),
-    //     this.getCuisine()
-    // ])
-    // .then((values)=>{
-    //   this.categories = values[0];
-    //   this.cuisines = values[1];
-    //   this.pending = false;
-    // })
-    // .catch((error)=>{
-    //   console.error(error)
-    // })
+    // NOT USED
+    /*
+    ** Populate the data from the API, categories, cuisines and restaurants
+     */
+    // this.fetchData();
+    this.getRestaurants();
   }
 }
 </script>
