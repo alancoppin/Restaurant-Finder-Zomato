@@ -43,8 +43,6 @@ h3,h4{
 
 // Input Checkbox
 .group-checkbox {
-  display: flex;
-  align-items: center;
   margin-bottom: 5px;
   input {
     padding: 0;
@@ -53,22 +51,18 @@ h3,h4{
     margin-bottom: 0;
     display: none;
     cursor: pointer;
-    &:checked + label:after {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 25%;
-      left: 9%;
-      width: .4rem;
-      height: .9rem;
-      border: solid $fontColor;
-      border-width: 0 3px 3px 0;
-      transform: rotate(45deg);
+    &:checked + label:before {
+      background-image: url('~@/assets/images/checkbox.svg');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 75%;
     }
   }
   label {
     position: relative;
     cursor: pointer;
+    display: flex;
+    align-items: center;
     &:before {
       content:'';
       -webkit-appearance: none;

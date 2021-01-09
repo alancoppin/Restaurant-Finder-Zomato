@@ -3,8 +3,7 @@
   <div class="RestaurantFinderCard">
     <!-- Card Image -->
     <div class="RestaurantFinderCard__image">
-      <img v-if="singleRestaurant.featured_image" :src="singleRestaurant.featured_image" :alt="singleRestaurant.name">
-      <img class="small" v-else :src="require('@/assets/images/image-polaroid-regular.svg')" alt="No image available">
+      <img v-if="singleRestaurant.featured_image" @load="displayImage" :src="singleRestaurant.featured_image" :alt="singleRestaurant.name">
     </div>
     <!-- Card Details -->
     <div class="RestaurantFinderCard__details">
@@ -44,6 +43,8 @@
 
 <script>
 
+import gsap from 'gsap';
+
 export default {
   name: "RestaurantFinderCard",
   props : {
@@ -52,6 +53,7 @@ export default {
   data(){
     return {
       singleRestaurant : {},
+      imagePending : true,
     }
   },
   methods : {
@@ -65,6 +67,14 @@ export default {
       }else{
         return false
       }
+    },
+    displayImage(){
+      this.imagePending = true;
+      gsap.fromTo('.RestaurantFinderCard__image img',{autoAlpha : 0},{autoAlpha : 1, duration : .2});
+    },
+    hideImage(){
+      this.imagePending = false;
+      gsap.set('.RestaurantFinderCard__image img',{autoAlpha : 0});
     }
   },
   created() {
@@ -74,6 +84,7 @@ export default {
   watch : {
     // Watch for any changes on restaurant prop, assign it to singleRestaurant to display the data
     restaurant(){
+      this.hideImage();
       this.singleRestaurant = this.restaurant[0].restaurant;
     }
   }
@@ -100,6 +111,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-image: url('~@/assets/images/image-polaroid-regular.svg');
+  background-repeat: no-repeat;
+  background-size: 40px;
+  background-position: center;
   &:before{
     content: '';
     display: block;
@@ -113,10 +128,6 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    &.small{
-      height: 40px;
-      width: auto;
-    }
   }
 }
 

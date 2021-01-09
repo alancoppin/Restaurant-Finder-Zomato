@@ -1,7 +1,7 @@
 <template>
   <!-- Results -->
   <div class="RestaurantFinder__results">
-    <div class="RestaurantFinderResults">
+    <div class="RestaurantFinderResults" ref="RestaurantFinderResults">
       <h3 class="RestaurantFinderResults__title">Results</h3>
       <ul class="RestaurantFinderResults__list" v-if="restaurants.length>0">
         <li class="RestaurantFinderResults__item" role="button" v-for="restaurant in restaurants" :key="restaurant.restaurant.id" v-on:click="getRestaurantCard(restaurant.restaurant.id)">
@@ -52,8 +52,10 @@ export default {
   },
   watch : {
     restaurants(){
-      console.log('data here');
       this.singleRestaurantData = null;
+    },
+    status(){
+      this.$refs.RestaurantFinderResults.scrollTop = 0;
     }
   }
 }
@@ -87,6 +89,8 @@ export default {
   top: 0;
   left: 0;
   z-index: 10;
+  height: 100%;
+  width: 100%;
 }
 
 .RestaurantFinderResults__empty{
