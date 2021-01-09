@@ -198,6 +198,8 @@ export default {
   .RestaurantFinderCard__btn{
     margin-left: 10px;
     flex-shrink: 0;
+    position: relative;
+    top: 5px;
     &--success{
       background-color:$green;
     }

@@ -28,7 +28,11 @@
           Rating
         </h3>
         <div class="RestaurantFinderFilters__slider">
-          <VueRangeSlider v-model="filterData.rangeRating" :min="rangeRating.min" :max="rangeRating.max" @drag-end="filterRestaurant"></VueRangeSlider>
+          <VueRangeSlider v-model="filterData.rangeRating" :min="rangeRating.min" :max="rangeRating.max" :clickable="false"></VueRangeSlider>
+          <div class="RestaurantFinderFilters__info-slider">
+            <span>{{ rangeRating.min }}</span>
+            <span>{{ rangeRating.max }}</span>
+          </div>
         </div>
       </div>
       <div class="RestaurantFinderFilters__range">
@@ -36,7 +40,11 @@
           Cost
         </h3>
         <div class="RestaurantFinderFilters__slider">
-          <VueRangeSlider v-model="filterData.rangeCost" :min="rangeCost.min" :max="rangeCost.max" @drag-end="filterRestaurant"></VueRangeSlider>
+          <VueRangeSlider v-model="filterData.rangeCost" :min="rangeCost.min" :max="rangeCost.max" :clickable="false"></VueRangeSlider>
+          <div class="RestaurantFinderFilters__info-slider">
+            <span>$</span>
+            <span>$$$$</span>
+          </div>
         </div>
       </div>
     </div>
@@ -84,7 +92,7 @@ export default {
   methods : {
     filterRestaurant(){
       // Change the status of the store
-      this.$store.dispatch('changeStatus','pending');
+      this.$store.dispatch('updateStatus','pending');
       // Build the parameters object to pass to the dispatch
       let params = this.buildParams();
       this.$store.dispatch('getRestaurants',params)
@@ -99,7 +107,7 @@ export default {
       return {
         cuisines : this.filterData.cuisine.join(','),
         category : this.filterData.categories.join(','),
-        rating : this.filterData.rangeRating
+        rating : this.filterData.rangeRating,
       }
     }
   }
@@ -111,9 +119,10 @@ export default {
 @import "src/assets/scss/variables";
 
 .RestaurantFinderFilters{
-  padding: 50px $spacingContainer 50px;
+  padding: 20px $spacingContainer 20px;
   background-color: white;
   display: flex;
+  align-items: center;
   height: $heightFilter;
   overflow: hidden;
 }
@@ -124,6 +133,7 @@ export default {
     display: flex;
     flex-flow: column;
     align-items: flex-end;
+    justify-content: space-between;
   }
   &:last-child{
     margin-right: 0;
@@ -132,7 +142,7 @@ export default {
 }
 
 .RestaurantFinderFilters__title{
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
 .RestaurantFinderFilters__choices{
@@ -147,13 +157,23 @@ export default {
 }
 
 .RestaurantFinderFilters__range{
-  margin-bottom: 2rem;
   max-width: 500px;
   width: 25vw;
   min-width: 200px;
   &:last-child{
     margin-bottom: 0;
+    position: relative;
+    top: 1rem;
   }
+  .RestaurantFinderFilters__title{
+    margin-bottom: .5rem;
+  }
+}
+
+.RestaurantFinderFilters__info-slider{
+  display: flex;
+  justify-content: space-between;
+  margin-top: -5px;
 }
 
 </style>

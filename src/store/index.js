@@ -15,18 +15,18 @@ export default new Vuex.Store({
     allRestaurants : (state) => state.restaurants,
     // Get single restaurant with an ID
     singleRestaurant : (state) => (resutaurantID) => state.restaurants.filter(item => item.restaurant.id === resutaurantID),
-    // Get the status from the store
-    getStatus : (state) => state.status
+    // Get status from the store
+    getStatus : (state) => state.status,
   },
   mutations: {
     // Set Data to state.restaurants
     setRestaurants (state, dataRestaurant) {
       state.restaurants = dataRestaurant
     },
-    // Set the status
+    // Set status in the state
     setStatus (state,status) {
       state.status = status;
-    }
+    },
   },
   actions: {
     // Get Restaurant from the API
@@ -48,8 +48,8 @@ export default new Vuex.Store({
             console.error(e);
           })
     },
-    changeStatus({commit},status){
+    updateStatus({commit},status){
       commit('setStatus',status);
-    }
+    },
   }
 })

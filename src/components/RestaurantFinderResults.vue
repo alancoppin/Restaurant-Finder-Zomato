@@ -48,7 +48,7 @@ export default {
      */
     getRestaurantCard(restaurantID){
       this.singleRestaurantData = this.$store.getters.singleRestaurant(restaurantID);
-    }
+    },
   },
   watch : {
     restaurants(){
