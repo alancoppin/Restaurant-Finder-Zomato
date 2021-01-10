@@ -3,8 +3,8 @@
   <div class="RestaurantFinder__results">
     <div class="RestaurantFinderResults" ref="RestaurantFinderResults">
       <h3 class="RestaurantFinderResults__title">Results</h3>
-      <ul class="RestaurantFinderResults__list" v-if="restaurants.length>0">
-        <li class="RestaurantFinderResults__item" :class="isActive===restaurant.restaurant.id ? 'RestaurantFinderResults__item--active' : ''" role="button" v-for="restaurant in restaurants" :key="restaurant.restaurant.id" v-on:click="getRestaurantCard(restaurant.restaurant.id)">
+      <ul class="RestaurantFinderResults__list" v-if="filteredRestaurants.length>0">
+        <li class="RestaurantFinderResults__item" :class="isActive===restaurant.restaurant.id ? 'RestaurantFinderResults__item--active' : ''" role="button" v-for="restaurant in filteredRestaurants" :key="restaurant.restaurant.id" v-on:click="getRestaurantCard(restaurant.restaurant.id)">
           {{restaurant.restaurant.name}}
         </li>
       </ul>
@@ -23,15 +23,12 @@
 <script>
 
 import RestaurantFinderCard from "@/components/RestaurantFinderCard";
-import {mapState} from 'vuex';
+import {mapGetters} from 'vuex';
 
 export default {
   name: "RestaurantFinderResults",
   components : {
     RestaurantFinderCard
-  },
-  props : {
-
   },
   data () {
     return {
@@ -41,7 +38,13 @@ export default {
       isActive : null
     }
   },
-  computed : mapState(['restaurants','status']),
+  computed : {
+    ...mapGetters({
+      'status' : 'getStatus',
+      'restaurants' : 'getAllRestaurants',
+      'filteredRestaurants' : 'getFilteredRestaurants'
+    })
+  },
   methods : {
     /*
     ** Get the data of the restaurant with the restaurant ID
@@ -50,11 +53,12 @@ export default {
     getRestaurantCard(restaurantID){
       this.isActive = restaurantID;
       this.singleRestaurantData = this.$store.getters.singleRestaurant(restaurantID);
-    },
+    }
   },
   watch : {
-    restaurants(){
+    filteredRestaurants(){
       this.singleRestaurantData = null;
+      this.isActive = null;
     },
     status(){
       this.$refs.RestaurantFinderResults.scrollTop = 0;

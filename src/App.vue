@@ -122,7 +122,6 @@ export default {
           }
         }
       ],
-      restaurants : []
     }
   },
   methods : {
@@ -174,7 +173,7 @@ export default {
       await this.getCuisine();
       this.getRestaurants();
       this.pending = false;
-    }
+    },
   },
   mounted(){
     // NOT USED

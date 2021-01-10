@@ -28,7 +28,7 @@
           Rating
         </h3>
         <div class="RestaurantFinderFilters__slider">
-          <VueRangeSlider v-model="filterData.rangeRating" :min="rangeRating.min" :max="rangeRating.max" :clickable="false"></VueRangeSlider>
+          <VueRangeSlider v-model="filterData.rangeRating" :min="rangeRating.min" :max="rangeRating.max" @drag-end="filterByRange" :clickable="false"></VueRangeSlider>
           <div class="RestaurantFinderFilters__info-slider">
             <span>{{ rangeRating.min }}</span>
             <span>{{ rangeRating.max }}</span>
@@ -40,7 +40,7 @@
           Cost
         </h3>
         <div class="RestaurantFinderFilters__slider">
-          <VueRangeSlider v-model="filterData.rangeCost" :min="rangeCost.min" :max="rangeCost.max" :clickable="false"></VueRangeSlider>
+          <VueRangeSlider v-model="filterData.rangeCost" :min="rangeCost.min" :max="rangeCost.max" @drag-end="filterByRange" :clickable="false"></VueRangeSlider>
           <div class="RestaurantFinderFilters__info-slider">
             <span>$</span>
             <span>$$$$</span>
@@ -77,17 +77,20 @@ export default {
         categories : [],
         cuisine : [],
         rangeRating :  [0,5],
-        rangeCost : [0,4]
+        rangeCost : [1,4]
       },
       rangeRating : {
         min : 0,
         max : 5
       },
       rangeCost : {
-        min : 0,
+        min : 1,
         max : 4
       }
     }
+  },
+  created() {
+    //set the filter
   },
   methods : {
     filterRestaurant(){
@@ -109,6 +112,10 @@ export default {
         category : this.filterData.categories.join(','),
         rating : this.filterData.rangeRating,
       }
+    },
+    filterByRange(){
+      this.$store.dispatch('updateStatus','pending');
+      this.$store.dispatch('updateFilter',{rating : this.filterData.rangeRating,cost : this.filterData.rangeCost});
     }
   }
 }

@@ -70,11 +70,13 @@ export default {
     },
     displayImage(){
       this.imagePending = true;
-      gsap.fromTo('.RestaurantFinderCard__image img',{autoAlpha : 0},{autoAlpha : 1, duration : .2});
+      if(this.singleRestaurant.featured_image)
+        gsap.fromTo('.RestaurantFinderCard__image img',{autoAlpha : 0},{autoAlpha : 1, duration : .2});
     },
     hideImage(){
       this.imagePending = false;
-      gsap.set('.RestaurantFinderCard__image img',{autoAlpha : 0});
+      if(this.singleRestaurant.featured_image)
+        gsap.set('.RestaurantFinderCard__image img',{autoAlpha : 0});
     }
   },
   created() {
