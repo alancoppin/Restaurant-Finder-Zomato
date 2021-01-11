@@ -1,12 +1,12 @@
 <template>
   <div id="app" >
-    <Loader v-if="pending" :text="'Getting restaurants'"></Loader>
+    <Loader v-if="pending"></Loader>
     <div class="RestaurantFinder" v-else>
       <div class="RestaurantFinder__filters">
         <RestaurantFinderFilters :categories="categories" :cuisines="cuisines"></RestaurantFinderFilters>
       </div>
       <div class="RestaurantFinder__grip">
-        <RestaurantFinderResults></RestaurantFinderResults>
+        <RestaurantFinderResults :waitingText="waitingText"></RestaurantFinderResults>
       </div>
     </div>
   </div>
@@ -27,6 +27,7 @@ export default {
   data () {
     return {
       pending : false,
+      waitingText : 'Getting location...',
       // Use to display the categories by ID
       categories : [
         {
@@ -159,10 +160,7 @@ export default {
     ** Get restaurants data through the store
      */
     async getRestaurants(){
-      return this.$store.dispatch('getRestaurants')
-          .catch((e)=>{
-            console.error(e)
-          })
+      await this.$store.dispatch('getRestaurants');
     },
     /*
     **
@@ -171,17 +169,20 @@ export default {
     async fetchData(){
       await this.getCategories();
       await this.getCuisine();
-      this.getRestaurants();
       this.pending = false;
     },
   },
-  mounted(){
+  async mounted(){
     // NOT USED
     /*
     ** Populate the data from the API, categories, cuisines and restaurants
      */
     // this.fetchData();
-    // Get restaurants from the API
+
+    // Get the geolocation
+    const coordinates = await this.$getLocation();
+    await this.$store.dispatch('getCity',{lat:coordinates.lat,lon:coordinates.lng});
+    this.waitingText = 'Getting restaurants...'
     this.getRestaurants();
   }
 }

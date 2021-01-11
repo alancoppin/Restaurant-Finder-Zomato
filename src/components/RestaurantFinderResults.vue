@@ -16,7 +16,7 @@
           </li>
         </ul>
         <p class="RestaurantFinderResults__empty" v-else>No results, please change your search</p>
-        <Loader v-if="status==='pending'" :class="'RestaurantFinderResults__loader'" :text="'Getting restaurants'"></Loader>
+        <Loader v-if="status==='pending'" :class="'RestaurantFinderResults__loader'" :text="waitingText"></Loader>
       </div>
     </div>
     <div class="RestaurantFinder__card">
@@ -37,6 +37,11 @@ export default {
   name: "RestaurantFinderResults",
   components : {
     RestaurantFinderCard
+  },
+  props : {
+    waitingText : {
+      type : String
+    }
   },
   data () {
     return {

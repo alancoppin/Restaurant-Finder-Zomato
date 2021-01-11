@@ -11,6 +11,7 @@ export default new Vuex.Store({
     filteredRestaurants : {},
     // Status of the process
     status : 'pending',
+    city_id : null,
     filter : {
     }
   },
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     // Get single restaurant with an ID
     singleRestaurant : (state) => (resutaurantID) => state.restaurants.filter(item => item.restaurant.id === resutaurantID),
     getStatus : (state) => state.status,
+    getCityID: (state) => state.city_id,
   },
   mutations: {
     // Set Data to state.restaurants
@@ -41,6 +43,10 @@ export default new Vuex.Store({
     // Filter the restaurants and store it into state.filteredRestaurants
     filterRestaurants(state) {
       state.filteredRestaurants = Helpers.filterRestaurants(state.restaurants,state.filter);
+    },
+    // Set the city ID
+    setCityID(state,city){
+      state.city_id = city
     }
   },
   actions: {
@@ -48,7 +54,7 @@ export default new Vuex.Store({
     async getRestaurants({ commit,state },params) {
       // let list = [0,20,40,60,80];
       let defaultParams = {
-        entity_id : process.env.VUE_APP_CITY_ID,
+        entity_id : state.city_id,
         entity_type : 'city',
       };
       let allParams = {...defaultParams,...params};
@@ -87,5 +93,16 @@ export default new Vuex.Store({
     async updateStatus({commit},status){
       await commit('setStatus',status);
     },
+    // Get the city through the API
+    async getCity({commit},coordinates){
+      try{
+        await axios.get('/geocode',{params : coordinates}).then(response =>{
+          commit('setCityID',response.data.location.city_id);
+        });
+      }catch(e){
+        console.log(e);
+        commit('setCityID',null);
+      }
+    }
   }
 })
