@@ -18,7 +18,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "src/assets/scss/_variables.scss";
+
 .app__loading{
   height: 100%;
   width: 100%;

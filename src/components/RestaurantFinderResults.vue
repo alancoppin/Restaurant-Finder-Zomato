@@ -69,8 +69,6 @@ export default {
 
 <style lang="scss" scoped>
 
-@import "src/assets/scss/variables";
-
 .RestaurantFinder__results{
   height: calc(100vh - #{$heightFilter});
   display: flex;

@@ -95,8 +95,6 @@ export default {
 
 <style lang="scss" scoped>
 
-@import "src/assets/scss/variables";
-
 .RestaurantFinderCard{
   padding:5rem;
   display: flex;

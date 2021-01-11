@@ -123,8 +123,6 @@ export default {
 
 <style lang="scss" scoped>
 
-@import "src/assets/scss/variables";
-
 .RestaurantFinderFilters{
   padding: 20px $spacingContainer 20px;
   background-color: white;
