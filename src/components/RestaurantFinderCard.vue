@@ -2,8 +2,9 @@
   <!-- Card -->
   <div class="RestaurantFinderCard">
     <!-- Card Image -->
-    <div class="RestaurantFinderCard__image">
-      <img v-if="singleRestaurant.featured_image" @load="displayImage" :src="singleRestaurant.featured_image" :alt="singleRestaurant.name">
+    <div class="RestaurantFinderCard__image" :class="singleRestaurant.featured_image ? '' : 'RestaurantFinderCard__image--empty'">
+      <img @load="displayImage" v-if="singleRestaurant.featured_image" :src="singleRestaurant.featured_image" :alt="singleRestaurant.name">
+      <Loader v-if="!isImageLoaded && singleRestaurant.featured_image"></Loader>
     </div>
     <!-- Card Details -->
     <div class="RestaurantFinderCard__details">
@@ -43,8 +44,6 @@
 
 <script>
 
-import gsap from 'gsap';
-
 export default {
   name: "RestaurantFinderCard",
   props : {
@@ -53,7 +52,7 @@ export default {
   data(){
     return {
       singleRestaurant : {},
-      imagePending : true,
+      isImageLoaded : false,
     }
   },
   methods : {
@@ -69,14 +68,10 @@ export default {
       }
     },
     displayImage(){
-      this.imagePending = true;
-      if(this.singleRestaurant.featured_image)
-        gsap.fromTo('.RestaurantFinderCard__image img',{autoAlpha : 0},{autoAlpha : 1, duration : .2});
+        this.isImageLoaded = true;
     },
     hideImage(){
-      this.imagePending = false;
-      if(this.singleRestaurant.featured_image)
-        gsap.set('.RestaurantFinderCard__image img',{autoAlpha : 0});
+      this.isImageLoaded = false;
     }
   },
   created() {
@@ -117,10 +112,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('~@/assets/images/image-polaroid-regular.svg');
-  background-repeat: no-repeat;
-  background-size: 40px;
-  background-position: center;
+  &--empty{
+    background-image: url('~@/assets/images/image-polaroid-regular.svg');
+    background-repeat: no-repeat;
+    background-size: 40px;
+    background-position: center;
+  }
   @include respond_to(lg-down){
     margin-right: 2rem;
   }
@@ -141,6 +138,12 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
+  }
+  .app__loading{
+    background-color: $greyBgResults;
+    height: 100%;
+    width: 100%;
+    position: absolute;
   }
 }
 
