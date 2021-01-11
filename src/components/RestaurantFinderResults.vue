@@ -84,6 +84,7 @@ export default {
   position: relative;
   background-color: $greyBgResults;
   padding: 10px 0;
+  flex-shrink: 0;
 }
 
 .RestaurantFinderResults{
