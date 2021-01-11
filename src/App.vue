@@ -188,6 +188,8 @@ export default {
 
 <style lang="scss">
 
+@import "~@/assets/scss/base";
+
 #app{
   height: 100vh;
   width: 100%;
