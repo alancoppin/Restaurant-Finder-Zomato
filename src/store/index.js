@@ -52,19 +52,16 @@ export default new Vuex.Store({
         entity_type : 'city',
       };
       let allParams = {...defaultParams,...params};
-      let data = [];
       try{
-        const response = await axios.get('/search',{params : allParams});
-        response.data.restaurants.map(item => {
-          data.push(item);
-        })
+        const data = await axios.get('/search',{params : allParams}).then(response => response.data.restaurants);
+
         await commit('setRestaurants', data);
         // if state.filter.cost and state.filter.rating exist, use it to filter data from the API
         if(state.filter.cost && state.filter.rating){
           await commit('setFilteredRestaurants', Helpers.filterRestaurants(data,state.filter));
         }
-        // if filter is empty, display all
         else{
+          // if filter is empty, display all
           await commit('setFilteredRestaurants', data);
         }
         await commit('setStatus','success');

@@ -181,6 +181,7 @@ export default {
     ** Populate the data from the API, categories, cuisines and restaurants
      */
     // this.fetchData();
+    // Get restaurants from the API
     this.getRestaurants();
   }
 }
