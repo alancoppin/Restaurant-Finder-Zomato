@@ -96,9 +96,15 @@ export default {
 <style lang="scss" scoped>
 
 .RestaurantFinderCard{
-  padding:5rem;
+  padding:63px;
   display: flex;
   align-items: flex-start;
+  @include respond_to(lg-down){
+    padding: 2.5rem;
+  }
+  @include respond_to(md-down){
+    flex-flow: column;
+  }
 }
 
 .RestaurantFinderCard__image{
@@ -115,6 +121,13 @@ export default {
   background-repeat: no-repeat;
   background-size: 40px;
   background-position: center;
+  @include respond_to(lg-down){
+    margin-right: 2rem;
+  }
+  @include respond_to(md-down){
+    width: 200px;
+    margin-bottom: 25px;
+  }
   &:before{
     content: '';
     display: block;
@@ -185,14 +198,23 @@ export default {
   .RestaurantFinderCard__info-title{
     line-height: .9;
     color: $fontColor;
+    @include respond_to(lg-down){
+      font-size: .9rem;
+    }
   }
   .RestaurantFinderCard__info{
     display: flex;
     align-items: flex-start;
     span:not(.RestaurantFinderCard__btn){
       font-size: 1.8rem;
+      @include respond_to(lg-down){
+        font-size: 1.4rem;
+      }
       &.RestaurantFinderCard__info--small-text{
         font-size: 1.4em;
+        @include respond_to(lg-down){
+          font-size: 1.1rem;
+        }
       }
     }
   }

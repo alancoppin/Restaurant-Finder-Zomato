@@ -195,6 +195,9 @@ export default {
   width: 100%;
   overflow: hidden;
   position: relative;
+  @include respond_to(md-down){
+    height: auto;
+  }
 }
 
 .RestaurantFinder{

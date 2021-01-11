@@ -5,7 +5,13 @@
       <div class="RestaurantFinderResults" ref="RestaurantFinderResults">
         <h3 class="RestaurantFinderResults__title">Results</h3>
         <ul class="RestaurantFinderResults__list" v-if="filteredRestaurants.length>0">
-          <li class="RestaurantFinderResults__item" :class="isActive===restaurant.restaurant.id ? 'RestaurantFinderResults__item--active' : ''" role="button" v-for="restaurant in filteredRestaurants" :key="restaurant.restaurant.id" v-on:click="getRestaurantCard(restaurant.restaurant.id)">
+          <li
+              class="RestaurantFinderResults__item"
+              :class="isActive===restaurant.restaurant.id ? 'RestaurantFinderResults__item--active' : ''"
+              role="button" v-for="restaurant in filteredRestaurants"
+              :key="restaurant.restaurant.id"
+              @click="isActive!==restaurant.restaurant.id ? getRestaurantCard(restaurant.restaurant.id) : ''"
+          >
             {{restaurant.restaurant.name}}
           </li>
         </ul>
@@ -75,6 +81,10 @@ export default {
   height: calc(100vh - #{$heightFilter});
   display: flex;
   position: relative;
+  @include respond_to(md-down){
+    height: auto;
+    background-color: $greyBgResults;
+  }
 }
 
 .RestaurantFinder__results-container{
@@ -94,24 +104,26 @@ export default {
   padding-top: 53px;
   flex-shrink: 0;
 
-  // Width
-  &::-webkit-scrollbar {
-    width: 10px;
-    margin: 5px;
-  }
-  // Track
-  &::-webkit-scrollbar-track {
-    background-color: #D5D5D5;
-    border-radius: 10px;
-  }
-  // Handle
-  &::-webkit-scrollbar-thumb {
-    background: #B2B6B7;
-    border-radius: 10px;
-  }
-  // Handle on hover
-  &::-webkit-scrollbar-thumb:hover {
-    background: #a5a8a9;
+  @include respond_to(lg){
+    // Width
+    &::-webkit-scrollbar {
+      width: 10px;
+      margin: 5px;
+    }
+    // Track
+    &::-webkit-scrollbar-track {
+      background-color: #D5D5D5;
+      border-radius: 10px;
+    }
+    // Handle
+    &::-webkit-scrollbar-thumb {
+      background: #B2B6B7;
+      border-radius: 10px;
+    }
+    // Handle on hover
+    &::-webkit-scrollbar-thumb:hover {
+      background: #a5a8a9;
+    }
   }
 }
 

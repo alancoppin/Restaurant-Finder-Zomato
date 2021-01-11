@@ -130,19 +130,33 @@ export default {
   align-items: center;
   height: $heightFilter;
   overflow: hidden;
+  @include respond_to(md-down){
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: auto;
+  }
 }
 
 .RestaurantFinderFilters__col{
   margin-right:7%;
+  &--middle{
+    @include respond_to(md-down){
+      margin-right: 0;
+    }
+  }
   &--right{
     display: flex;
     flex-flow: column;
     align-items: flex-end;
     justify-content: space-between;
-  }
-  &:last-child{
     margin-right: 0;
     flex-grow: 1;
+    @include respond_to(md-down){
+      width: 100%;
+      margin-top: 25px;
+      align-items: flex-start;
+      flex-flow: row;
+    }
   }
 }
 
@@ -158,6 +172,9 @@ export default {
     column-gap: 6rem;
     row-gap: 0;
     align-items: flex-start;
+    @include respond_to(lg-down){
+      column-gap : 3rem !important;
+    }
   }
 }
 
@@ -165,13 +182,22 @@ export default {
   max-width: 500px;
   width: 25vw;
   min-width: 200px;
+  @include respond_to(md-down){
+    width: 40%;
+  }
   &:last-child{
     margin-bottom: 0;
     position: relative;
     top: 1rem;
+    @include respond_to(md-down){
+      top: 0;
+    }
   }
   .RestaurantFinderFilters__title{
     margin-bottom: .5rem;
+    @include respond_to(md-down){
+      margin-bottom: 0;
+    }
   }
 }
 

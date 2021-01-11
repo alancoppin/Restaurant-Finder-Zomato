@@ -15,6 +15,7 @@
     "reset-css-complete": "^2.0.0",
     "vue": "^2.6.11",
     "vue-range-component": "^1.0.3",
+    "vue-screen-size": "^1.0.1",
     "vuex": "^3.4.0"
   },
   "devDependencies": {

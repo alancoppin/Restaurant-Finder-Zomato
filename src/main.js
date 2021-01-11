@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
 import axios from "axios";
+import VueScreenSize from 'vue-screen-size'
 
 Vue.config.productionTip = false
 
@@ -12,6 +13,8 @@ axios.defaults.headers.common['user-key'] = process.env.VUE_APP_ZOMATO_API_KEY
 
 
 Vue.component('Loader', require('./components/RestaurantFinderLoader').default);
+
+Vue.use(VueScreenSize)
 
 
 new Vue({
