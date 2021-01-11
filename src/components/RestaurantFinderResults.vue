@@ -1,15 +1,17 @@
 <template>
   <!-- Results -->
   <div class="RestaurantFinder__results">
-    <div class="RestaurantFinderResults" ref="RestaurantFinderResults">
-      <h3 class="RestaurantFinderResults__title">Results</h3>
-      <ul class="RestaurantFinderResults__list" v-if="filteredRestaurants.length>0">
-        <li class="RestaurantFinderResults__item" :class="isActive===restaurant.restaurant.id ? 'RestaurantFinderResults__item--active' : ''" role="button" v-for="restaurant in filteredRestaurants" :key="restaurant.restaurant.id" v-on:click="getRestaurantCard(restaurant.restaurant.id)">
-          {{restaurant.restaurant.name}}
-        </li>
-      </ul>
-      <p class="RestaurantFinderResults__empty" v-else>No results, please change your search</p>
-      <Loader v-if="status==='pending'" :class="'RestaurantFinderResults__loader'" :text="'Getting restaurants'"></Loader>
+    <div class="RestaurantFinder__results-container">
+      <div class="RestaurantFinderResults" ref="RestaurantFinderResults">
+        <h3 class="RestaurantFinderResults__title">Results</h3>
+        <ul class="RestaurantFinderResults__list" v-if="filteredRestaurants.length>0">
+          <li class="RestaurantFinderResults__item" :class="isActive===restaurant.restaurant.id ? 'RestaurantFinderResults__item--active' : ''" role="button" v-for="restaurant in filteredRestaurants" :key="restaurant.restaurant.id" v-on:click="getRestaurantCard(restaurant.restaurant.id)">
+            {{restaurant.restaurant.name}}
+          </li>
+        </ul>
+        <p class="RestaurantFinderResults__empty" v-else>No results, please change your search</p>
+        <Loader v-if="status==='pending'" :class="'RestaurantFinderResults__loader'" :text="'Getting restaurants'"></Loader>
+      </div>
     </div>
     <div class="RestaurantFinder__card">
       <RestaurantFinderCard v-if="status==='success' && singleRestaurantData" :restaurant="singleRestaurantData"></RestaurantFinderCard>
@@ -75,16 +77,41 @@ export default {
   position: relative;
 }
 
-.RestaurantFinderResults{
+.RestaurantFinder__results-container{
   width: 28%;
   min-width:400px;
-  background-color: $greyBgResults;
   height: 100%;
   position: relative;
-  overflow:scroll;
-  padding-top: 68px;
-  margin-bottom: 40px;
+  background-color: $greyBgResults;
+  padding: 10px 0;
+}
+
+.RestaurantFinderResults{
+  height: 100%;
+  width: calc(100% - 10px);
+  overflow:hidden scroll;
+  padding-top: 53px;
   flex-shrink: 0;
+
+  // Width
+  &::-webkit-scrollbar {
+    width: 10px;
+    margin: 5px;
+  }
+  // Track
+  &::-webkit-scrollbar-track {
+    background-color: #D5D5D5;
+    border-radius: 10px;
+  }
+  // Handle
+  &::-webkit-scrollbar-thumb {
+    background: #B2B6B7;
+    border-radius: 10px;
+  }
+  // Handle on hover
+  &::-webkit-scrollbar-thumb:hover {
+    background: #a5a8a9;
+  }
 }
 
 .app__loading.RestaurantFinderResults__loader{
@@ -136,12 +163,12 @@ export default {
 }
 
 .RestaurantFinderResults__title{
+  padding: 15px $spacingContainer 15px;
   position: absolute;
-  width: 95%;
-  top: 0;
-  background-color: $greyBgResults;
-  padding: 30px $spacingContainer 15px;
-  height: 68px;
+  height: 53px;
+  background: $greyBgResults;
+  top: 10px;
+  width: calc(100% - 20px);
 }
 
 .RestaurantFinderResults__list{
@@ -150,7 +177,7 @@ export default {
 
 .RestaurantFinderResults__item{
   display: inline-block;
-  width: 95%;
+  width: calc(100% - 10px);
   padding:15px 50px 15px $spacingContainer;
   border-bottom:1px solid #b2b6b7;
   color: $blueGrey;

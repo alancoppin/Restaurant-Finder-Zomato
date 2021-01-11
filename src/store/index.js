@@ -77,6 +77,7 @@ export default new Vuex.Store({
     // Update Filter rating
     async updateFilter({commit,dispatch},filter){
       await commit('setFilter',filter);
+      // Run the filtering on state.restaurants
       dispatch('filterRestaurants');
     },
     // Action to filter restaurants
