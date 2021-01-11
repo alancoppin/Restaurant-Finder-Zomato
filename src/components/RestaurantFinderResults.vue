@@ -22,7 +22,7 @@
     <div class="RestaurantFinder__card">
       <RestaurantFinderCard v-if="status==='success' && singleRestaurantData" :restaurant="singleRestaurantData"></RestaurantFinderCard>
       <div class="RestaurantFinder__no-card" v-else>
-        <span v-if="status==='success'">Select a restaurant to see more</span>
+        <span v-if="status==='success' && filteredRestaurants.length>0">Select a restaurant to see more</span>
       </div>
     </div>
   </div>
@@ -95,6 +95,10 @@ export default {
   background-color: $greyBgResults;
   padding: 10px 0;
   flex-shrink: 0;
+  @include respond_to(sm-down){
+    width: 100%;
+    height: auto;
+  }
 }
 
 .RestaurantFinderResults{
@@ -144,6 +148,8 @@ export default {
 .RestaurantFinder__card{
   flex-grow: 1;
   background-color: $greyBgCard;
+  height: calc(100vh - 250px);
+  overflow: hidden scroll;
 }
 
 .RestaurantFinder__no-card{
@@ -156,12 +162,18 @@ export default {
   font-size: 1.3em;
   font-weight: bold;
   text-transform: uppercase;
+  @include respond_to(sm-down){
+    align-items: flex-start;
+  }
   span{
     opacity: .3;
     display: inline-flex;
     flex-flow: column;
     align-items: center;
     justify-content: center;
+    @include respond_to(sm-down){
+      text-align: center;
+    }
     &:before{
       content: '';
       margin-bottom: 10px;

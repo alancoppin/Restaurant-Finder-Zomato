@@ -72,6 +72,7 @@ export default new Vuex.Store({
         console.error(e);
         commit('setRestaurants', []);
         commit('setFilteredRestaurants', []);
+        commit('setStatus','success');
       }
     },
     // Update Filter rating
