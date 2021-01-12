@@ -143,6 +143,9 @@ export default {
     @include respond_to(md-down){
       margin-right: 0;
     }
+    @include respond_to(xs-down) {
+      margin-top: 1rem;
+    }
   }
   &--right{
     display: flex;
@@ -156,6 +159,9 @@ export default {
       margin-top: 25px;
       align-items: flex-start;
       flex-flow: row;
+    }
+    @include respond_to(md-down){
+      flex-flow: column;
     }
   }
 }
@@ -176,6 +182,14 @@ export default {
       column-gap : 3rem !important;
     }
   }
+  @include respond_to(xs-down){
+    grid-template-columns: 120px auto;
+    grid-template-rows: auto auto;
+    column-gap: 3rem;
+    display: grid;
+    row-gap: 0;
+    align-items: flex-start;
+  }
 }
 
 .RestaurantFinderFilters__range{
@@ -184,6 +198,10 @@ export default {
   min-width: 200px;
   @include respond_to(md-down){
     width: 40%;
+  }
+  @include respond_to(xs-down){
+    margin-bottom: 1rem;
+    width: 100%;
   }
   &:last-child{
     margin-bottom: 0;

@@ -1,6 +1,7 @@
 <template>
   <!-- Card -->
-  <div class="RestaurantFinderCard">
+  <div class="RestaurantFinderCard" :class="isCardOpen ? 'RestaurantFinderCard--open' : ''">
+    <div class="RestaurantFinderCard__back" @click="backToResults">Back to results</div>
     <!-- Card Image -->
     <div class="RestaurantFinderCard__image" :class="singleRestaurant.featured_image ? '' : 'RestaurantFinderCard__image--empty'">
       <img @load="displayImage" v-if="singleRestaurant.featured_image" :src="singleRestaurant.featured_image" :alt="singleRestaurant.name">
@@ -47,12 +48,14 @@
 export default {
   name: "RestaurantFinderCard",
   props : {
-    restaurant : Array
+    restaurant : Array,
+    isOpen : String
   },
   data(){
     return {
       singleRestaurant : {},
       isImageLoaded : false,
+      isCardOpen : false
     }
   },
   methods : {
@@ -72,17 +75,24 @@ export default {
     },
     hideImage(){
       this.isImageLoaded = false;
+    },
+    backToResults(){
+      this.isCardOpen = false;
     }
   },
   created() {
     // Assign the value received from the parent to singleRestaurant to display the data
     this.singleRestaurant = this.restaurant[0].restaurant;
+    this.isCardOpen = true
   },
   watch : {
     // Watch for any changes on restaurant prop, assign it to singleRestaurant to display the data
     restaurant(){
       this.hideImage();
       this.singleRestaurant = this.restaurant[0].restaurant;
+    },
+    isOpen(){
+      this.isCardOpen = true
     }
   }
 }
@@ -99,6 +109,42 @@ export default {
   }
   @include respond_to(md-down){
     flex-flow: column;
+  }
+  @include respond_to(xs-down) {
+    padding-top: 75px;
+    &--open{
+      position: fixed;
+      top: 0;
+      z-index: 100;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden scroll;
+      background-color: $greyBgCard;
+    }
+  }
+}
+
+.RestaurantFinderCard__back{
+  display: none;
+  @include respond_to(xs-down){
+    display: flex;
+    position: absolute;
+    top: 20px;
+    align-items: center;
+    text-transform: uppercase;
+    opacity: .7;
+    font-weight: bold;
+    &:before{
+      content: '';
+      display: block;
+      height: 1.3rem;
+      width: 1.3rem;
+      margin-right: 10px;
+      background-image: url('~@/assets/images/arrow-left-regular.svg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
   }
 }
 

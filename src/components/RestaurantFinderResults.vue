@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="RestaurantFinder__card">
-      <RestaurantFinderCard v-if="status==='success' && singleRestaurantData" :restaurant="singleRestaurantData"></RestaurantFinderCard>
+      <RestaurantFinderCard v-if="status==='success' && singleRestaurantData" :isOpen="isActive" :restaurant="singleRestaurantData"></RestaurantFinderCard>
       <div class="RestaurantFinder__no-card" v-else>
         <span v-if="status==='success' && filteredRestaurants.length>0">Select a restaurant to see more</span>
       </div>
@@ -48,7 +48,7 @@ export default {
       pending : true,
       singleRestaurantData : null,
       resultsRestaurant : null,
-      isActive : null
+      isActive : null,
     }
   },
   computed : {
@@ -143,6 +143,10 @@ export default {
   z-index: 10;
   height: 100%;
   width: 100%;
+  @include respond_to(xs-down){
+    padding: 25px;
+    justify-content: flex-start;
+  }
 }
 
 .RestaurantFinderResults__empty{
@@ -154,6 +158,14 @@ export default {
   background-color: $greyBgCard;
   height: calc(100vh - 250px);
   overflow: hidden scroll;
+  @include respond_to(md-down){
+    height: auto;
+  }
+  @include respond_to(xs-down){
+    position: absolute;
+    height: 0;
+    overflow: hidden;
+  }
 }
 
 .RestaurantFinder__no-card{
@@ -217,8 +229,10 @@ export default {
     border-top:1px solid #b2b6b7;
   }
   &--active,&:hover{
-    background-color: $cyan;
-    color: white;
+    @include respond_to(sm){
+      background-color: $cyan;
+      color: white;
+    }
   }
 }
 
