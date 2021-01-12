@@ -1,7 +1,6 @@
 <template>
   <div id="app" >
-    <Loader v-if="pending"></Loader>
-    <div class="RestaurantFinder" v-else>
+    <div class="RestaurantFinder">
       <div class="RestaurantFinder__filters">
         <RestaurantFinderFilters :categories="categories" :cuisines="cuisines"></RestaurantFinderFilters>
       </div>
@@ -16,8 +15,6 @@
 import RestaurantFinderFilters from "@/components/RestaurantFinderFilters";
 import RestaurantFinderResults from "@/components/RestaurantFinderResults";
 
-import axios from "axios";
-
 export default {
   name: 'App',
   components: {
@@ -26,7 +23,6 @@ export default {
   },
   data () {
     return {
-      pending : false,
       waitingText : 'Getting location...',
       // Use to display the categories by ID
       categories : [
@@ -126,59 +122,12 @@ export default {
     }
   },
   methods : {
-    /*
-    ** Get categories data from the API
-     */
-    getCategories(){
-      return axios.get('/categories')
-          .then(response => {
-            this.categories = response.data.categories.filter(item=>this.targetedCategories.includes(item.categories.id))
-          })
-          .catch(e => {
-            console.error(e);
-          })
-
-    },
-    /*
-    ** Get cuisine data from the API
-     */
-    getCuisine(){
-      return axios.get('/cuisines',{
-            params : {
-              city_id : process.env.VUE_APP_CITY_ID
-            }
-          })
-          .then(response => {
-            this.cuisines = response.data.cuisines.filter(item=>this.targetedCuisines.includes(item.cuisine.cuisine_id));
-          })
-          .catch(e => {
-            console.error(e);
-          })
-
-    },
-    /*
-    ** Get restaurants data through the store
-     */
+    // Get restaurants data through the store
     async getRestaurants(){
       await this.$store.dispatch('getRestaurants');
     },
-    /*
-    **
-     */
-    // Fetch all the data and hide the loading once the data are fetch
-    async fetchData(){
-      await this.getCategories();
-      await this.getCuisine();
-      this.pending = false;
-    },
   },
   async mounted(){
-    // NOT USED
-    /*
-    ** Populate the data from the API, categories, cuisines and restaurants
-     */
-    // this.fetchData();
-
     // Get the geolocation
     const coordinates = await this.$getLocation();
     await this.$store.dispatch('getCity',{lat:coordinates.lat,lon:coordinates.lng});
