@@ -5,7 +5,10 @@
         <RestaurantFinderFilters :categories="categories" :cuisines="cuisines"></RestaurantFinderFilters>
       </div>
       <div class="RestaurantFinder__grip">
-        <RestaurantFinderResults :waitingText="waitingText"></RestaurantFinderResults>
+        <RestaurantFinderResults :waitingText="waitingText" v-if="hasLocation"></RestaurantFinderResults>
+        <div class="RestaurantFinder__no-geolocation" v-else>
+          <p>This app required the geolocation. Please allow in your browser settings.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -23,6 +26,7 @@ export default {
   },
   data () {
     return {
+      hasLocation : true,
       waitingText : 'Getting location...',
       // Use to display the categories by ID
       categories : [
@@ -126,11 +130,20 @@ export default {
     async getRestaurants(){
       await this.$store.dispatch('getRestaurants');
     },
+    async getGeolocation(){
+      try {
+        const coordinates = await this.$getLocation();
+        this.hasLocation = true;
+        await this.$store.dispatch('getCity', {lat: coordinates.lat, lon: coordinates.lng});
+      }catch(e){
+        console.error(e);
+        this.hasLocation = false;
+      }
+    }
   },
-  async mounted(){
+  mounted(){
     // Get the geolocation
-    const coordinates = await this.$getLocation();
-    await this.$store.dispatch('getCity',{lat:coordinates.lat,lon:coordinates.lng});
+    this.getGeolocation();
     this.waitingText = 'Getting restaurants...'
     this.getRestaurants();
   }
@@ -156,6 +169,11 @@ export default {
   flex-flow: column;
   height: 100%;
   width: 100%;
+}
+
+.RestaurantFinder__no-geolocation{
+  padding: 50px $spacingContainer;
+  font-weight: bold;
 }
 
 </style>
