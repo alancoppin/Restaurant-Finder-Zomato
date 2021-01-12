@@ -54,7 +54,6 @@ export default {
   computed : {
     ...mapGetters({
       'status' : 'getStatus',
-      'restaurants' : 'getAllRestaurants',
       'filteredRestaurants' : 'getFilteredRestaurants'
     })
   },
