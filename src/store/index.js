@@ -85,12 +85,12 @@ export default new Vuex.Store({
       await dispatch('filterRestaurants');
     },
     // Action to filter restaurants
-    async filterRestaurants({commit}){
+    filterRestaurants({commit}){
       commit('filterRestaurants');
       commit('setStatus','success');
     },
     // Update status
-    async updateStatus({commit},status){
+    updateStatus({commit},status){
       commit('setStatus',status);
     },
     // Get the city through the API
