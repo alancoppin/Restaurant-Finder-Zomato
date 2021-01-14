@@ -99,9 +99,6 @@ export default {
       // Build the parameters object to pass to the dispatch
       let params = this.buildParams();
       this.$store.dispatch('getRestaurants',params)
-          .then(()=>{
-
-          })
           .catch((e)=>{
             console.error(e)
           })

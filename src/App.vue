@@ -127,14 +127,14 @@ export default {
   },
   methods : {
     // Get restaurants data through the store
-    async getRestaurants(){
-      await this.$store.dispatch('getRestaurants');
+    getRestaurants(){
+      this.$store.dispatch('getRestaurants');
     },
     async getGeolocation(){
       try {
         const coordinates = await this.$getLocation();
         this.hasLocation = true;
-        await this.$store.dispatch('getCity', {lat: coordinates.lat, lon: coordinates.lng});
+        this.$store.dispatch('getCity', {lat: coordinates.lat, lon: coordinates.lng});
       }catch(e){
         console.error(e);
         this.hasLocation = false;

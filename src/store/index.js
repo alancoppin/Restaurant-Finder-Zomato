@@ -61,16 +61,16 @@ export default new Vuex.Store({
       try{
         const data = await axios.get('/search',{params : allParams}).then(response => response.data.restaurants);
 
-        await commit('setRestaurants', data);
+        commit('setRestaurants', data);
         // if state.filter.cost and state.filter.rating exist, use it to filter data from the API
         if(state.filter.cost && state.filter.rating){
-          await commit('setFilteredRestaurants', Helpers.filterRestaurants(data,state.filter));
+          commit('setFilteredRestaurants', Helpers.filterRestaurants(data,state.filter));
         }
         else{
           // if filter is empty, display all
-          await commit('setFilteredRestaurants', data);
+          commit('setFilteredRestaurants', data);
         }
-        await commit('setStatus','success');
+        commit('setStatus','success');
       }catch (e){
         console.error(e);
         commit('setRestaurants', []);
@@ -80,18 +80,18 @@ export default new Vuex.Store({
     },
     // Update Filter rating
     async updateFilter({commit,dispatch},filter){
-      await commit('setFilter',filter);
+      commit('setFilter',filter);
       // Run the filtering on state.restaurants
-      dispatch('filterRestaurants');
+      await dispatch('filterRestaurants');
     },
     // Action to filter restaurants
     async filterRestaurants({commit}){
-      await commit('filterRestaurants');
-      await commit('setStatus','success');
+      commit('filterRestaurants');
+      commit('setStatus','success');
     },
     // Update status
     async updateStatus({commit},status){
-      await commit('setStatus',status);
+      commit('setStatus',status);
     },
     // Get the city through the API
     async getCity({commit},coordinates){
