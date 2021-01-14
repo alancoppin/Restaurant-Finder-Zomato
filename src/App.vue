@@ -127,25 +127,26 @@ export default {
   },
   methods : {
     // Get restaurants data through the store
-    getRestaurants(){
-      this.$store.dispatch('getRestaurants');
+    async getRestaurants(){
+      await this.$store.dispatch('getRestaurants');
     },
     async getGeolocation(){
       try {
         const coordinates = await this.$getLocation();
         this.hasLocation = true;
-        this.$store.dispatch('getCity', {lat: coordinates.lat, lon: coordinates.lng});
+        await this.$store.dispatch('getCity', {lat: coordinates.lat, lon: coordinates.lng});
       }catch(e){
         console.error(e);
         this.hasLocation = false;
       }
-    }
+    },
   },
   mounted(){
     // Get the geolocation
-    this.getGeolocation();
-    this.waitingText = 'Getting restaurants...'
-    this.getRestaurants();
+    this.getGeolocation().then(()=>{
+      this.waitingText = 'Getting restaurants...'
+      this.getRestaurants();
+    });
   }
 }
 </script>
