@@ -55,11 +55,23 @@ h3,h4{
     margin-bottom: 0;
     display: none;
     cursor: pointer;
-    &:checked + label:before {
-      background-image: url('~@/assets/images/checkbox.svg');
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 75%;
+    &:checked + label{
+      transition: opacity .3s ease;
+      &:before {
+        background-image: url('~@/assets/images/checkbox.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 75%;
+        transition: opacity .3s ease;
+      }
+    }
+    &:disabled{
+      & + label{
+        opacity: .5;
+        &:before {
+          opacity: .5;
+        }
+      }
     }
   }
   label {

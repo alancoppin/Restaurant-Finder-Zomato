@@ -6,7 +6,7 @@
       </h3>
       <div class="RestaurantFinderFilters__choices">
         <div class="RestaurantFinderFilters__item group-checkbox" v-for="category in categories" :key="category.categories.id">
-          <input type="checkbox" :id="'category-'+category.categories.id" :value="category.categories.id" v-model="filterData.categories" @change="filterRestaurant">
+          <input type="checkbox" :id="'category-'+category.categories.id" :value="category.categories.id" v-model="filterData.categories" @change="filterRestaurant" :disabled="status!=='success'" />
           <label :for="'category-'+category.categories.id">{{category.categories.name}}</label>
         </div>
       </div>
@@ -17,7 +17,7 @@
       </h3>
       <div class="RestaurantFinderFilters__choices RestaurantFinderFilters__choices--grid">
         <div class="RestaurantFinderFilters__item group-checkbox" v-for="cuisine in cuisines" :key="cuisine.cuisine.cuisine_id">
-          <input type="checkbox" :id="'cuisine-'+cuisine.cuisine.cuisine_id" :value="cuisine.cuisine.cuisine_id" v-model="filterData.cuisine" @change="filterRestaurant">
+          <input type="checkbox" :id="'cuisine-'+cuisine.cuisine.cuisine_id" :value="cuisine.cuisine.cuisine_id" v-model="filterData.cuisine" @change="filterRestaurant" :disabled="status!=='success'" />
           <label :for="'cuisine-'+cuisine.cuisine.cuisine_id">{{cuisine.cuisine.cuisine_name}}</label>
         </div>
       </div>
@@ -28,7 +28,7 @@
           Rating
         </h3>
         <div class="RestaurantFinderFilters__slider">
-          <VueRangeSlider v-model="filterData.rangeRating" :min="rangeRating.min" :max="rangeRating.max" @drag-end="filterByRange" :clickable="false"></VueRangeSlider>
+          <VueRangeSlider :disabled="status!=='success'" v-model="filterData.rangeRating" :min="rangeRating.min" :max="rangeRating.max" @drag-end="filterByRange" :clickable="false"></VueRangeSlider>
           <div class="RestaurantFinderFilters__info-slider">
             <span>{{ rangeRating.min }}</span>
             <span>{{ rangeRating.max }}</span>
@@ -40,7 +40,7 @@
           Cost
         </h3>
         <div class="RestaurantFinderFilters__slider">
-          <VueRangeSlider v-model="filterData.rangeCost" :min="rangeCost.min" :max="rangeCost.max" @drag-end="filterByRange" :clickable="false"></VueRangeSlider>
+          <VueRangeSlider :disabled="status!=='success'" v-model="filterData.rangeCost" :min="rangeCost.min" :max="rangeCost.max" @drag-end="filterByRange" :clickable="false"></VueRangeSlider>
           <div class="RestaurantFinderFilters__info-slider">
             <span>$</span>
             <span>$$$$</span>
@@ -55,6 +55,7 @@
 
 import 'vue-range-component/dist/vue-range-slider.css'
 import VueRangeSlider from 'vue-range-component'
+import {mapGetters} from "vuex";
 
 export default {
   name: "RestaurantFinderFilters",
@@ -86,8 +87,13 @@ export default {
       rangeCost : {
         min : 1,
         max : 4
-      }
+      },
     }
+  },
+  computed : {
+    ...mapGetters({
+      'status' : 'getStatus',
+    })
   },
   created() {
     //set the filter
