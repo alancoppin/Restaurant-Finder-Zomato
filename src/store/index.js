@@ -79,10 +79,10 @@ export default new Vuex.Store({
       }
     },
     // Update Filter rating
-    async updateFilter({commit,dispatch},filter){
+    updateFilter({commit,dispatch},filter){
       commit('setFilter',filter);
       // Run the filtering on state.restaurants
-      await dispatch('filterRestaurants');
+      dispatch('filterRestaurants');
     },
     // Action to filter restaurants
     filterRestaurants({commit}){
